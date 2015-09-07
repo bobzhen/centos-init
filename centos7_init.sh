@@ -69,7 +69,7 @@ EOF
 /sbin/sysctl -p
 echo "sysctl set OK!!"
 
-disable selinux
+#disable selinux
 sed -i '/SELINUX/s/enforcing/disabled/' /etc/selinux/config
 setenforce 0
 
@@ -107,6 +107,14 @@ EOF
 
 #setup pip
 wget -O - 'https://bootstrap.pypa.io/get-pip.py' | python
+
+#关闭firewall，打开iptables
+systemctl mask firewalld
+systemctl stop firewalld
+yum -y install iptables-services
+systemctl enable iptables
+systemctl start iptables
+echo 'iptables Ok!'
 
 cat << EOF
  +--------------------------------------------------------------+
